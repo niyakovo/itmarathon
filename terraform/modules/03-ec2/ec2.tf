@@ -88,7 +88,7 @@ resource "aws_instance" "this" {
   associate_public_ip_address = var.associate_public_ip_address
   availability_zone           = data.aws_availability_zones.available.names[0]
   iam_instance_profile        = var.create_iam_instance_profile ? aws_iam_instance_profile.this[0].name : var.iam_instance_profile
-  instance_type               = "t4g.micro"
+  instance_type               = "t2.micro"
   subnet_id                   = var.subnet
   vpc_security_group_ids      = var.sgs
   user_data_base64            = base64encode(local.user_data)
