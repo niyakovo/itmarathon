@@ -1,9 +1,9 @@
 # Docker image ARGS
 ARG BASE_IMAGE_REPO=mcr.microsoft.com
 ARG BASE_IMAGE_BUILD=dotnet/sdk
-ARG BASE_IMAGE_BUILD_TAG=9.0
+ARG BASE_IMAGE_BUILD_TAG=8.0  <-- changed from 9.0 to 8.0
 ARG BASE_IMAGE_RUNTIME=dotnet/aspnet
-ARG BASE_IMAGE_RUNTIME_TAG=9.0
+ARG BASE_IMAGE_RUNTIME_TAG=8.0 <-- changed from 9.0 to 8.0
 
 # Setup Build Image
 FROM ${BASE_IMAGE_REPO}/${BASE_IMAGE_BUILD}:${BASE_IMAGE_BUILD_TAG} AS build
