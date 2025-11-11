@@ -4,6 +4,26 @@ set -e
 echo "Waiting for container to start..."
 sleep 10
 
+LOGS_COMMAND_ID=$(aws ssm send-command \
+  --instance-ids "${INSTANCE_ID}" \
+  --document-name "AWS-RunShellScript" \
+  --parameters "commands=['docker logs ${CONTAINER_NAME}']" \
+  --query "Command.CommandId" \
+  --output text)
+
+sleep 10 # Дайте час на виконання команди
+
+LOGS=$(aws ssm get-command-invocation \
+  --command-id "$LOGS_COMMAND_ID" \
+  --instance-id "${INSTANCE_ID}" \
+  --query "StandardOutputContent" \
+  --output text)
+
+echo "::error::Container logs (Error reason is likely here):"
+echo "$LOGS"
+
+
+
 # Checking container status
 COMMAND_ID=$(aws ssm send-command \
   --instance-ids "${INSTANCE_ID}" \
