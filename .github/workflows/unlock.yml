@@ -37,7 +37,7 @@ jobs:
 
     - name: Force Unlock State
       if: success()
-      run: terraform force-unlock ${{ github.event.inputs.lock_id }}
+      run: terraform force-unlock -force ${{ github.event.inputs.lock_id }}
       working-directory: ./terraform
       
     - name: Verify Unlock (Optional)

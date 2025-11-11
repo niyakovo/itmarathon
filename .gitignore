@@ -19,3 +19,5 @@
 # Ignore environment-specific files
 .envrc
 .env
+*.rpm
+dbeaver-ce-latest-stable.x86_64.rpm
