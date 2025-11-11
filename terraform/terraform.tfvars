@@ -70,6 +70,7 @@ iam_role_policies = {
 rds_port             = 5432
 db_id                = "postgres-db"
 db_username          = "postgres"
+db_password          = "MarathonPswd_123"
 db_engine            = "postgres"
 db_engine_version    = "17.5"
 db_instance_class    = "db.t3.micro"
