@@ -1,0 +1,48 @@
+name: Force Terraform State Unlock
+
+on:
+  workflow_dispatch:
+    inputs:
+      lock_id:
+        description: 'ID блокування Terraform для примусового зняття'
+        required: true
+        default: '128d96fe-76c6-a14d-770a-545d72766e13' # Встановіть тут ID
+      
+jobs:
+  unlock:
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: eu-central-1 # Замініть на ваш регіон, якщо він інший
+      
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+      
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+        
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: 1.13.0 # Використовуйте версію, що вказана у логах
+        
+    - name: Terraform Init
+      id: init
+      run: terraform init
+      working-directory: ./terraform # Вкажіть кореневий каталог вашого .tf коду
+
+    - name: Force Unlock State
+      if: success()
+      run: terraform force-unlock ${{ github.event.inputs.lock_id }}
+      working-directory: ./terraform
+      
+    - name: Verify Unlock (Optional)
+      if: success()
+      run: |
+        echo "Successfully requested unlock for ID: ${{ github.event.inputs.lock_id }}"
+        echo "Можна запускати destroy або apply знову."
+      working-directory: ./terraform
